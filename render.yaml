@@ -1,4 +1,9 @@
 services:
   - type: web
-    name: cake_project
-    dockerfilePath: Dockerfile
+    name: chessGame
+    env: ruby
+    buildCommand: |
+      bundle install --jobs 4 --retry 3 --deployment
+      bundle exec rake assets:precompile
+      bundle exec rake db:migrate db:seed
+    startCommand: bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-production}
