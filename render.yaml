@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: cake_project
+    env: ruby:3.1.2
+    buildCommand: |
+      gem install bundler --user-install
+      bundle install
+      bundle exec rake db:migrate db:seed
+      bundle exec rake assets:precompile
+      bundle exec rake assets:clean
+    startCommand: bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-production}
